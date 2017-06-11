@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "A simple pdf parsing application",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "author": "Ryan Prinz",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.15.3",
     "pdf2json": "^1.1.7"
   }
 }
