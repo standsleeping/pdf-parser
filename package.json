@@ -1,0 +1,13 @@
+{
+  "name": "pdf-parser",
+  "version": "1.0.0",
+  "description": "A simple pdf parsing application",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Ryan Prinz",
+  "license": "MIT",
+  "dependencies": {
+    "pdf2json": "^1.1.7"
+  }
+}
