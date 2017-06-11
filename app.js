@@ -1,5 +1,8 @@
 const express = require('express')
+var cors = require('cors')
 const app = express()
+
+app.use(cors())
 
 let PDFParser = require("pdf2json")
 let pdfParser = new PDFParser(this,1)

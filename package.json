@@ -8,6 +8,7 @@
   "author": "Ryan Prinz",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.3",
     "express": "^4.15.3",
     "pdf2json": "^1.1.7"
   }
