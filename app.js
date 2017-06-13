@@ -1,24 +1,44 @@
 const express = require('express')
-var cors = require('cors')
-var bodyParser = require('body-parser')
 const app = express()
 
+var cors = require('cors')
 app.use(cors())
-app.use(bodyParser.json())
 
-let PDFParser = require("pdf2json")
-let pdfParser = new PDFParser(this,1)
+// var bodyParser = require('body-parser')
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
 
-pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError))
-pdfParser.on("pdfParser_dataReady", pdfData => {})
+// let PDFParser = require("pdf2json")
+// let pdfParser = new PDFParser(this,1)
+//
+// pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError))
+// pdfParser.on("pdfParser_dataReady", pdfData => {
+//   fs.writeFile("./content.txt", pdfParser.getRawTextContent());
+// })
+// pdfParser.loadPDF("./SampleResume.pdf")
 
-pdfParser.loadPDF("./SampleResume.pdf")
+var formidable = require('formidable')
+var http = require('http')
+var util = require('util')
 
-app.post('/', function (req, res) {
-  // pry = require('pryjs')
-  // eval(pry.it)
-  res.send({text: text})
-})
+function process_request(req, res) {
+  var form = new formidable.IncomingForm();
+
+  form.parse(req);
+
+  form.on('fileBegin', function (name, file){
+      file.path = __dirname + '/uploads/' + file.name;
+  });
+
+  form.on('file', function (name, file){
+      console.log('Uploaded ' + file.name);
+  });
+
+  res.writeHead(201)
+  res.end()
+}
+
+app.post('/', process_request)
 
 app.listen(4567, function () {
   console.log('Listening on port 4567.')
