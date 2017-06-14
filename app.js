@@ -1,3 +1,4 @@
+const uuidV4 = require('uuid/v4')
 const express = require('express')
 const app = express()
 
@@ -8,34 +9,29 @@ app.use(cors())
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
 
-// let PDFParser = require("pdf2json")
-// let pdfParser = new PDFParser(this,1)
-//
-// pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError))
-// pdfParser.on("pdfParser_dataReady", pdfData => {
-//   fs.writeFile("./content.txt", pdfParser.getRawTextContent());
-// })
-// pdfParser.loadPDF("./SampleResume.pdf")
-
+let PDFParser = require("pdf2json")
+let pdfParser = new PDFParser(this,1)
 var formidable = require('formidable')
 var http = require('http')
 var util = require('util')
 
 function process_request(req, res) {
-  var form = new formidable.IncomingForm();
 
-  form.parse(req);
+  var form = new formidable.IncomingForm()
+  form.parse(req)
 
   form.on('fileBegin', function (name, file){
-      file.path = __dirname + '/uploads/' + file.name;
-  });
+    file.path = __dirname + '/uploads/' + file.name
+  })
 
   form.on('file', function (name, file){
-      console.log('Uploaded ' + file.name);
-  });
+    pdfParser.loadPDF(file.path)
+  })
 
-  res.writeHead(201)
-  res.end()
+  pdfParser.on("pdfParser_dataReady", pdfData => {
+    rawTextContent = pdfParser.getRawTextContent()
+    res.send({rawTextContent: rawTextContent})
+  })
 }
 
 app.post('/', process_request)
