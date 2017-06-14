@@ -9,6 +9,7 @@ app.use(cors())
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
 
+let fs = require('fs')
 let PDFParser = require("pdf2json")
 let pdfParser = new PDFParser(this,1)
 var formidable = require('formidable')
@@ -30,7 +31,10 @@ function process_request(req, res) {
 
   pdfParser.on("pdfParser_dataReady", pdfData => {
     rawTextContent = pdfParser.getRawTextContent()
+    filePath = __dirname + "/uploads/" + uuidV4() + ".txt"
+    fs.writeFile(filePath, pdfParser.getRawTextContent())
     res.send({rawTextContent: rawTextContent})
+    res.end()
   })
 }
 
